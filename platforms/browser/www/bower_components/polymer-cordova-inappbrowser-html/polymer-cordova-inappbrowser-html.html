@@ -1,0 +1,117 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer-cordova-aware/polymer-cordova-aware-behavior.html">
+
+<!--
+Web component that opens external links InAppBrowser [Polymer 1.x](https://www.polymer-project.org). This avoids in native Cordova apps that the
+WebView replaces the app with the content of the external link.
+
+Similar like [html-echo](https://github.com/Collaborne/html-echo), the element uses the `html` to dump HTML bound to a String property directly into the DOM because Polymer
+doesn't allow this otherwise right now.
+
+### Example
+
+```html
+<polymer-cordova-inappbrowser-html
+  html='<a href="https://www.google.com">External link</a><a href="#test">Internal link</a>'>
+</polymer-cordova-inappbrowser-html>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="polymer-cordova-inappbrowser-html">
+</dom-module>
+
+<script>
+
+(function() {
+
+	Polymer({
+		is: 'polymer-cordova-inappbrowser-html',
+		properties: {
+			/**
+			 * Plain HTML that is directly dumped into the DOM
+			 */
+			html: {
+				type: String,
+				value: '',
+				observer: '_refreshHtml'
+			},
+
+			/**
+			 * Options for the new window.
+			 */
+			windowOptions: {
+				type: Object,
+			}
+		},
+
+		behaviors: [
+			Polymer.CordovaAwareBehavior
+		],
+
+		observers: [
+			'_setDefaultWindowOptions(isCordovaEnvironment)'
+		],
+
+		// Private methods
+		_refreshHtml: function(html) {
+			this.innerHTML = html;
+
+			// Calculate the actual options string for window.open
+			var linkOptions = this._calculateWindowOptionsString(this.windowOptions);
+			// Wait until the DOM is updated
+			this.async(function() {
+				// Iterate over all anchors to manipulate the external links
+				var anchors = Polymer.dom(this.root).querySelectorAll('a');
+				for (var i = 0, len = anchors.length; i < len; i++) {
+					// Is this an external link?
+					var href = anchors[i].getAttribute('href');
+					if (this._isExternalLink(href)) {
+						// External links need to be opened in the InAppBrowser. This avoids in native Cordova apps that the WebView replaces the app with the content of the external link.
+						anchors[i].onclick = (function(href) {
+							return function() {
+								// Open in InAppBrowser
+								// @see https://github.com/apache/cordova-plugin-inappbrowser
+								window.open(href, '_blank', linkOptions);
+
+								// Block the browsers default behavior
+								return false;
+							}
+						})(href);
+					}
+				}
+			});
+		},
+
+		_calculateWindowOptionsString: function(windowOptions) {
+			return windowOptions ? Object.keys(windowOptions).reduce(function(result, key) {
+				if (result) {
+					result += ',';
+				}
+				return result += key + '=' + windowOptions[key];
+			}, '') : '';
+		},
+
+		_setDefaultWindowOptions: function(isCordovaEnvironment) {
+			if (isCordovaEnvironment && !this.windowOptions) {
+				this.windowOptions = {
+					'location': 'yes',
+					'enableViewPortScale': 'yes',
+				};
+
+				// Force an update, if we already rendered the links once before.
+				this._refreshHtml(this.html);
+			}
+		},
+
+		/**
+		 * Checks if this is an external link
+		 */
+		_isExternalLink(href) {
+			return typeof href === 'string' && href.length > 0 && href[0] !== '#';
+		}
+	});
+
+})();
+
+</script>

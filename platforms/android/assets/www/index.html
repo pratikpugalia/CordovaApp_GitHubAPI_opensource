@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+    <script src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    function onLoad(){
+      document.addEventListener("deviceready", onDeviceReady, false);
+    }
+
+    function onDeviceReady(){
+      window.open= cordova.InAppBrowser.open;
+    }
+    </script>
+
+
+    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="bower_components/polymer-cordova-inappbrowser-html/polymer-cordova-inappbrowser-html.html">
+    <link rel="import" href="bower_components/paper-button/paper-button.html">
+    <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+    <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="bower_components/polymer/polymer.html">
+    <link rel="import" href="bower_components/iron-icons/communication-icons.html">
+    <link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
+    <link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
+    <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+    <link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
+    <link rel="import" href="bower_components/paper-input/paper-input.html">
+    <link rel="import" href="bower_components/paper-item/paper-item.html">
+    <link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+    <link rel="import" href="bower_components/paper-menu/paper-menu.html">
+    <link rel="import" href="bower_components/paper-progress/paper-progress.html">
+    <link rel="import" href="bower_components/iron-pages/iron-pages.html">
+    <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="bower_components/iron-list/iron-list.html">
+    <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+    <link rel="import" href="bower_components/iron-image/iron-image.html">
+    <link rel="import" href="bower_components/parallax-element/parallax-element.html">
+     <link rel="import" href="bower_components/paper-fab/paper-fab.html">
+     <link rel="import" href="everest/everest.html">
+     <link rel="import" href="everest/everest.css" type="css">
+    <title>Free Open source App</title>
+
+</head>
+
+<body onLoad="onLoad()">
+
+    <style>
+    iron-list {
+        padding-left: 10px;
+        padding-right: 10px;
+        --iron-list-items-container: {
+          @apply(--layout-horizontal);
+          max-width: 800px;
+          margin: auto;
+          margin-top: 60px;
+          margin-bottom: 60px;
+          border-bottom: 1px solid #ddd;
+        };
+      }
+    .item {
+        @apply(--layout-horizontal);
+        position: relative;
+        padding: 10px;
+        background-color: white;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+
+      .avatar {
+        position: absolute;
+        top: 35%;
+        left:5%;
+        height: 60px;
+        width: 60px;
+        border-radius: 60px;
+        box-sizing: border-box;
+        background-color: #DDD;
+      }
+      .log{
+        height: 20px;
+        width: 20px;
+        margin-top: 20px;
+        border-radius: 20px;
+        box-sizing: border-box; 
+      }
+      .log1{
+        height: 20px;
+        width: 20px;
+        border-radius: 20px;
+        box-sizing: border-box; 
+      }
+      .pad {
+        padding: 0 8px;
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+      }
+
+      .primary {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .shormText, .shortText, .longText, .normText {
+        font-size: 14px;
+      }
+
+
+
+      .longText {
+        color: gray;
+        display: none;
+      }
+      .normText {
+       color: gray;
+        display: none; 
+      }
+      .item:hover .shortText::after {
+        content: ' [+]';
+        color: gray;
+      }
+
+      .item.expanded:hover .shortText::after {
+        content: '';
+      }
+
+      .item.expanded .longText {
+        display: block;
+      }
+      .item.expanded .normText {
+        display: block;
+      }
+      .item.expanded:hover .longText::after {
+        content: ' [–]';
+      }
+      .pad1{
+        padding-left: 30%
+      }
+     
+      .parent{
+        position: relative;
+      }
+      #sort1{
+        display: none;
+      }
+
+      #sort2{
+        display: none;
+      }
+      #sort3{
+        display: none;
+      }
+      #yay{
+        position: absolute;
+        top: 40px;
+        right:20px;
+      }
+      #yay1{
+        position: absolute;
+        top: 40%;
+        right:2%;
+      }
+      #hide{
+        display: block;
+      }
+
+      #hidden{
+        display: none;
+      }
+
+      #secondSet{
+        display: none;
+      }
+
+      #firstSet{
+        display: block;
+      }
+      #search{
+        display: none;
+      
+      }
+      #list{
+        display: none;
+      
+      }
+      #list2{
+        display: none;
+      
+      }
+      #list3{
+        display: none;
+      
+      }
+      .input_search{
+        margin-left: 20%;
+        margin-right: 20%;
+        padding-top: 5%;
+        color: gray;
+      }
+
+      .input_search1{
+        margin: auto;
+        padding-top: 2%;
+        color: gray;
+      }
+
+
+      .spacer {
+        @apply(--layout-flex);
+      }
+
+      @media (max-width: 460px) {
+        paper-toolbar .bottom.title {
+          font-size: 14px;
+        }
+      }
+    </style>
+
+     <style is="custom-style">
+      paper-dropdown-menu.custom { 
+
+        --paper-input-container-underline: {
+              display: none;
+            };
+
+      }
+      </style>
+
+    <paper-drawer-panel id="panel" forceNarrow="true">
+        
+        <paper-header-panel drawer id="panel1">
+          
+          <paper-toolbar id="drawerTool" style="background-image: url(img/logo.png);background-repeat: no-repeat; background-position: center;" class="tall">
+            <span class="title">Menu</span>
+          </paper-toolbar>
+         
+        <paper-menu  attr-for-selected="value" selected="About" style="height: 700px" onClick="document.getElementById('titleBar').innerHTML=this.selected;">
+          <paper-item id="paperMenuFirstItem" value="About" onClick="document.querySelector('#panel').togglePanel();">About</paper-item>
+          <paper-item id="paperMenuSecondItem" value="Home" onClick="document.querySelector('#panel').togglePanel();">Home</paper-item>
+          <paper-item id="paperMenuThirdItem" value="Search" onClick="document.querySelector('#panel').togglePanel();">Search</paper-item>
+          <paper-item id="paperMenuForthItem" value="OpenSource News" onClick="document.querySelector('#panel').togglePanel();">OpenSource News</paper-item>
+          <paper-item id="paperMenusixthItem" value="MyGithub" onClick="document.querySelector('#panel').togglePanel();">MyGithub</paper-item>
+          <paper-item id="paperMenuFifthItem" value="Help & Feedback" onClick="document.querySelector('#panel').togglePanel();">Help & Feedback</paper-item>
+        </paper-menu>
+        
+        </paper-header-panel>
+    
+
+        <paper-header-panel main>
+          
+          <paper-toolbar id="mainTool">
+            <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+            <span class="title" id="titleBar">About</span>
+          </paper-toolbar>
+
+
+          <div id ="firstSet">
+          <paper-tabs id="hide" class="hide_1" selected="0">
+              <paper-tab>Getting Started</paper-tab>
+              <paper-tab>FAQ</paper-tab>
+              <paper-tab>GIT</paper-tab>
+          </paper-tabs>
+
+          <iron-pages class="home" selected="0">
+            <div style="padding: 5%">
+            <image src=img/open1.png style="height: 20%; width: 20%; padding-left: 40%"></image>
+   
+            <h3>WHAT IS OPEN SOURCE?</h3>
+            Open Source Software is just like another software, however, you get free access to its source code,  you may use, modify and redistribute it. The open source software is free. Developers from all over the world may contribute to a project, improvise on it and reditribute for the benefit of all.
+            <br>
+            Contribution form a diversity ebables OSS to integrate a variety of innovative ideas for the software. With so many eyeballs scanninng through the code, it becomes difficult for a bug to escape!
+            <br>
+            Open Source Software is not a new concept. It has been in use since mid 1990s. Today, it is used by a large number of powerful organizations for whom security is a priority.
+            <br>
+            <br>
+            <h3> LICENCE</h3>
+            Open Source Softwares are licenced, however the OSS licence is significantly different from the proprietary software licence. Open source licences are essentially terms of use.
+            Open source software licenses promote collaboration and sharing because they allow other people to make modifications to source code and incorporate those changes into their own projects. Some open source licenses ensure that anyone who alters and then shares a program with others must also share that program's source code without charging a licensing fee for it. In other words, computer programmers can access, view, and modify open source software whenever they like—as long as they let others do the same when they share their work.
+            <br>
+
+
+            There are a variety of licence models for open source, where each licence model has specific terms for the use and modification of code. For this reason, it is important to understand both the specifics of the open source licence in question and how the Department intends to use and redistribute any modified OSS.<br>
+            Examples of open-source licenses include Apache License, BSD license, GNU General Public License, GNU Lesser General Public License, MIT License, Eclipse Public License and Mozilla Public License.
+
+            <br>
+            <br>
+            <h3>Why Open Source?</h3>
+            Since most Open Source projects dispense with the concept of anything easily recognisable as a formal specification, it's hard to point to that as good way of defining what is a bug and what is a feature. Determining what constitutes a bug is usually by agreement amongst the developers and users of the software (an overlapping community in many cases). Obvious failure to perform is easily recognised as a bug, as is failure to conform to appropriate published standards. Security related failings (exploits or vulnerabilities) are clearly bugs too. Each of these kinds of bugs is usually addressed with speedy fixes wherever possible and Open Source advocates will claim very rapid time-to-fix characteristics for software.
+
+            Severe defects tend to be fixed within hours of their being detected, a process wich is undoubtedly assisted by the availability of the source code. Able developers who discover a bug will commonly also fix it and then report it to the maintainers as well as issuing an updated version of the software on their own authority.
+
+
+
+
+
+
+            </div>
+            <div>Tab 2 of Page 2</div>
+            <div style="padding: 5%">
+              <image src=img/github.png style="width: 92%; "></image>
+   <h3>WHAT IS IT?</h3>
+   <br>
+      To understand GitHub, you must first have an understanding of Git. Git is an open-source version control system that was started by <i>Linus Trovalds</i> - the same person who created <i>Linux</i>. So, Git is a “version control system,” what does that mean? When developers are creating something (an application, for example), they are making constant changes to the code and releasing new versions, up to and after the first official (non-beta) release.Version control systems keep these revisions straight, and store the modifications in a central repository. 
+    <br><br>    
+      Git is a command-line tool, but the center around which all things involving Git revolve – effectively, the Hub, is GitHub.com, where developers can store their projects and network with likeminded people.<br><br>  
+      Although GitHub is a Git repository hosting service, but it adds many of its own features. While Git is a command line tool, GitHub provides a Web-based graphical interface. It also provides access control and several collaboration features, such as a wikis and basic task management tools for every project.
+    <br><br>         
+
+
+
+
+            <h3>  WHY Github?</h3>
+    <br>
+      Because it’s a social network that has completely changed the way we work. Each user on GitHub has their own profile, which can acts like a resume of sorts, showing your past work and contributions to other projects via pull requests. Simply by being a member, you can brush elbows with the likes of <i>Google</i> and <i>Facebook</i>. Before GitHub existed, major companies created their knowledge mainly in private. But when you access their GitHub accounts, you’re free to download, study, and build upon anything they add to the network.<br><br>
+      Still why use something like Git? Say you and a coworker are both updating pages on the same website. You make your changes, save them, and upload them back to the website. So far, so good. The problem comes when your coworker is working on the same page as you at the same time. One of you is about to have your work overwritten and erased.<br><br>  
+      A version control application like Git keeps that from happening. You and your coworker can each upload your revisions to the same page, and Git will save two copies. Later, you can merge your changes together without losing any work along the way. You can even revert to an earlier version at any time, because Git keeps a “snapshot” of every change ever made.<br><br>  
+
+    <h3>HOW TO  USE IT?</h3>
+    <br>
+    Before we go on learning how the GitHub workflow is lets learn some basic terminologies associated with GitHub :-<br><br>  
+    <b>Command Line</b> : The computer program we use to input Git commands. You type text-based commands, known as prompts, into the screen, instead of using a mouse.<br><br>  
+    <b>Repository</b> : A directory or storage space where your projects can live. Sometimes GitHub users shorten this to “repo.” It can be local to a folder on your computer, or it can be a storage space on GitHub or another online host. You can keep code files, text files, image files, you name it, inside a repository.<br><br>  
+    <b>Version Control</b> : Basically, the purpose Git was designed to serve. When you have a Microsoft Word file, you either overwrite every saved file with a new save, or you save multiple versions. With Git, you don’t have to. It keeps “snapshots” of every point in time in the project’s history, so you can never lose or overwrite it.<br><br>  
+    <b>Commit</b> : This is the command that gives Git its power. When you commit, you are taking a “snapshot” of your repository at that point in time, giving you a checkpoint to which you can re-evaluate or restore your project to any previous state.<br><br>  
+    <b>Branch</b> : How do multiple people work on a project at the same time without Git getting them confused? Usually, they “branch off” of the main project with their own versions full of changes they themselves have made. After they’re done, it’s time to “merge” that branch back with the “master,” the main directory of the project<br><br>  <b>Issues</b> : Most software projects have a bug tracker of some kind. GitHub’s tracker is called Issues, and has its own section in every repository.<br><br> 
+          To get started with the work flow <a onclick="window.open('https://help.github.com/articles/set-up-git','_blank','location=no');"><u>Click Here</u></a> 
+            </div>
+          </iron-pages>
+          </div>
+
+          <div id ="secondSet">
+          <paper-tabs id="hidden" class="hidden_1" selected="0">
+              <paper-tab value="rep">Repositories</paper-tab>
+              <paper-tab>Users</paper-tab>
+          </paper-tabs>
+
+          <iron-pages class="second">
+              <div>
+                <dom-module id="x-collapse">
+                <template>
+                <paper-dropdown-menu class="input_search1" style="width: 40%; padding-left: 30%" label="For repos, users, issues" no-label-float selected-item-label="{{selectedItem}}">
+                        <paper-menu attr-for-selected="value" selected="{{type1}}"class="dropdown-content">
+                          <paper-item value="any">All Languages</paper-item>
+                          <paper-item value="C">C</paper-item>
+                          <paper-item value="C%23">C#</paper-item>
+                          <paper-item value="C%2B%2B">C++</paper-item>
+                          <paper-item value="Clojure">Clojure</paper-item>
+                          <paper-item value="CoffeeScript">CoffeeScript</paper-item>
+                          <paper-item value="CSS">CSS</paper-item>
+                          <paper-item value="Go">Go</paper-item>
+                          <paper-item value="Haskell">Haskell</paper-item>
+                          <paper-item value="HTML">HTML</paper-item>
+                          <paper-item value="Java">Java</paper-item>
+                          <paper-item value="JavaScript">JavaScript</paper-item>
+                          <paper-item value="Lua">Lua</paper-item>
+                          <paper-item value="Matlab">Matlab</paper-item>
+                          <paper-item value="Objective-C">Objective-C</paper-item>
+                          <paper-item value="Perl">Perl</paper-item>
+                          <paper-item value="PHP">PHP</paper-item>
+                          <paper-item value="Python">Python</paper-item>
+                          <paper-item value="R">R</paper-item>
+                          <paper-item value="Ruby">Ruby</paper-item>
+                          <paper-item value="Scala">Scala</paper-item>
+                          <paper-item value="Shell">Shell</paper-item>
+                          <paper-item value="Swift">Swift</paper-item>
+                          <paper-item value="TeX">TeX</paper-item>
+                          <paper-item value="VimL">VimL</paper-item>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                <iron-ajax 
+                url="{{url}}" 
+                params='{"alt":"json"}'
+                last-response="{{data}}"
+                auto
+                loading="{{isloading}}"
+                handle-as="json"
+                on-response="handleResponse"
+                debounce-duration="300"></iron-ajax>
+               <template is="dom-if" if="{{isloading}}">
+  <paper-progress style="margin: 0 auto;padding-top: 10%;padding-bottom: 10%;"id="progressBar" indeterminate></paper-progress>
+</template>
+              <iron-list id="list11" items="[[data.items]]" as="item" selection-enabled >
+                <template>
+                  <div>
+                    <div class$="[[getClassForItem(item, selected)]]">
+                      
+                      <div class="pad">
+                        <div class="primary">Repo_Name: [[item.name]]</div>
+                        <div class="shortText">[[item.full_name]]</div>
+                        <div class="normText">Date created: [[splittext(item.created_at)]]</div>
+                        <div class="normText">Date updated: [[splittext(item.updated_at)]]</div>
+                        <div class="longText">Date pushed: [[splittext(item.pushed_at)]]</div>
+                        <div class="shormText"><iron-image class="log" sizing="contain" src="img/fork.png" align="right">FORKS</iron-image>  [[item.forks_count]] &nbsp;&nbsp;&nbsp;&nbsp; <iron-image class="log1" sizing="contain" src="img/star.png">STARS</iron-image> &nbsp; [[item.stargazers_count]]</div>
+                      </div>
+                      <a id="myl" value="[[item.html_url]]" onclick="window.open(this.value,'_blank','location=no');">
+                      <div id="yay">
+                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
+                        </div>
+                        </a>
+                      <iron-icon icon$="[[iconForItem(item)]]"></iron-icon>
+                    </div>
+                  </div>
+                </template>
+              </iron-list>
+
+              </template>
+              </dom-module>
+              <x-collapse></x-collapse>
+              </div>
+              <div>
+                <dom-module id="y-collapse">
+                <template>
+                <paper-input label="Enter Location" style="width:40%" no-label-float type="text" value="{{input1}}" class="input_search1"></paper-input>
+                <iron-ajax 
+                url="{{url}}" 
+                params='{"alt":"json"}'
+                last-response="{{data}}"
+                auto
+                loading="{{isloading}}"
+                handle-as="json"
+                on-response="handleResp"
+                debounce-duration="300"></iron-ajax>
+                <template is="dom-if" if="{{isloading}}">
+  <paper-progress style="margin: 0 auto;padding-top: 10%;padding-bottom: 10%;"id="progressBar" indeterminate></paper-progress>
+</template>
+                <iron-list sizing="cover" id="list12" items="[[data.items]]" as="item" selection-enabled >
+                  <template>
+                    <div>
+                      <div class$="[[getClassForItem(item, selected)]]">
+                       
+                        <div style="padding-top: 15px">
+                        <iron-image class="avatar" sizing="cover" src="[[item.avatar_url]]"></iron-image>
+                        </div>
+                        
+                        <div class="pad1">
+                          <div class="primary" style="font-size: 18px">Username: [[item.login]]</div>
+                          <br>
+                          <div class="shormText" ><iron-icon icon="icons:star" style="--iron-icon-fill-color: blue"></iron-icon>  &nbsp; [[item.followers]] </div>
+                          <div class="shormText" ><iron-icon icon="communication:location-on"></iron-icon> &nbsp;[[item.location]]</div>
+                          <div class="shormText" id="e_mail" ><iron-icon icon="communication:email"></iron-icon>&nbsp;&nbsp;[[e_mailfunc(item.email)]]</div>
+                          <div class="shormText" id="company"><iron-icon icon="communication:contact-mail"></iron-icon> &nbsp;[[companyfunc(item.company)]]</div>
+                        </div>
+                        
+                        <a value="[[item.html_url]]" onclick="window.open(this.value,'_blank','location=no');">
+                        <div id="yay1" class="right">
+                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
+                        </div>
+                        </a>
+                      </div>
+                    </div>
+                  </template>
+                </iron-list>
+                </template>
+              </dom-module>
+              <y-collapse></y-collapse>
+              </div>
+          </iron-pages>
+          </div>
+
+
+ <div id="search">
+          <template is="dom-bind">
+
+          <iron-pages class="search_1">
+            <div section="vertical">
+                  <paper-input label="Search Github" no-label-float type="text" value="{{input1}}" class="input_search"></paper-input>
+                  <paper-dropdown-menu class="input_search" label="For Repos, Users, Issues" no-label-float selected-item-label="{{selectedItem}}">
+                    <paper-menu id="myMenu" attr-for-selected="value" selected="{{type1}}"class="dropdown-content">
+                      <paper-item value="repositories">Repositories</paper-item>
+                      <paper-item value="users">Users</paper-item>
+                      <paper-item value="issues">Issues</paper-item>
+                    </paper-menu>
+                  </paper-dropdown-menu>  
+                  <hr>
+                  <paper-dropdown-menu id="sort1" class="input_search" label="Best Match" no-label-float selected-item-label="{{selectedItem}}">        
+                    <paper-menu attr-for-selected="value" selected="{{filter}}"class="dropdown-content">
+                      <paper-item value="">Best Match</paper-item>
+                      <paper-item value="stars">Most Stars</paper-item>
+                      <paper-item value="forks">Most Forks</paper-item>
+                      <paper-item value="updated&order=desc">Recently Updated</paper-item>
+                    </paper-menu>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu  id="sort2" class="input_search" label="Best Match" no-label-float selected-item-label="{{selectedItem}}">
+                    <paper-menu  attr-for-selected="value" selected="{{filter}}"class="dropdown-content">
+                      <paper-item value="">Best Match</paper-item>
+                      <paper-item value="followers">Most Followers</paper-item>
+                      <paper-item value="repositories">Most Repositories</paper-item>
+                      <paper-item value="joined&order=desc">Recently Joined</paper-item>
+                    </paper-menu>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu id="sort3" class="input_search" label="Best Match" no-label-float selected-item-label="{{selectedItem}}">
+                    <paper-menu attr-for-selected="value" selected="{{filter}}"class="dropdown-content">
+                      <paper-item value="">Best Match</paper-item>
+                      <paper-item value="comments">Most Commented</paper-item>
+                      <paper-item value="created&order=desc">Newest</paper-item>
+                      <paper-item value="created&order=asc">Oldest</paper-item>
+                      <paper-item value="updated&order=desc">Recently Joined</paper-item>
+                    </paper-menu>
+                    </paper-dropdown-menu>
+<dom-module id="gh-h">
+  <template>
+
+    <iron-ajax 
+       url="{{url}}" 
+        params='{"alt":"json"}'
+                  last-response="{{data}}"
+                  auto
+                  loading={{isloading}}
+                  handle-as="json"
+                  on-response="handleResponse"
+                  debounce-duration="300"></iron-ajax>
+                  <template is="dom-if" if="{{isloading}}">
+  <paper-progress style="margin: 0 auto;padding-top: 10%;padding-bottom: 10%;"id="progressBar" indeterminate></paper-progress>
+</template>
+    <iron-list id="list" items="[[data.items]]" as="item" selection-enabled >
+                <template>
+                  <div>
+                    <div class$="[[getClassForItem(item, selected)]]">
+                     <div class="pad">
+                        <div class="primary">Repo_Name: [[item.name]]</div>
+                        <div class="shortText">[[item.full_name]]</div>
+                        <div class="normText">Date created: [[splittext(item.created_at)]]</div>
+                        <div class="normText">Date updated: [[splittext(item.updated_at)]]</div>
+                        <div class="longText">Date pushed: [[splittext(item.pushed_at)]]</div>
+                        <div class="shormText"><iron-image class="log" sizing="contain" src="img/fork.png" align="right">FORKS</iron-image>  [[item.forks_count]] &nbsp;&nbsp;&nbsp;&nbsp; <iron-image class="log1" sizing="contain" src="img/star.png">STARS</iron-image> &nbsp; [[item.stargazers_count]]</div>
+                      </div>
+                      <a id="myl" value="[[item.html_url]]" onclick="window.open(this.value,'_blank','location=no');">
+                      <div id="yay">
+                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
+                        </div>
+                        </a>
+                    </div>
+                    </div>
+                   
+                  
+                </template>
+     </iron-list>
+      <iron-list id="list2" items="[[data.items]]" as="item" selection-enabled >
+                <template>
+                  <div>
+                    <div class$="[[getClassForItem(item, selected)]]">
+                       <div style="padding-top: 15px">
+                        <iron-image class="avatar" sizing="cover" src="[[item.avatar_url]]"></iron-image>
+                        </div>
+                        
+                        <div class="pad1">
+                          <div class="primary" style="font-size: 18px">Username: [[item.login]]</div>
+                          <br>
+                          <div class="shormText" ><iron-icon icon="icons:star" style="--iron-icon-fill-color: blue"></iron-icon>  &nbsp; [[item.followers]] </div>
+                          <div class="shormText" ><iron-icon icon="communication:location-on"></iron-icon> &nbsp;[[item.location]]</div>
+                          <div class="shormText" id="e_mail" ><iron-icon icon="communication:email"></iron-icon>&nbsp;&nbsp;[[e_mailfunc(item.email)]]</div>
+                          <div class="shormText" id="company"><iron-icon icon="communication:contact-mail"></iron-icon> &nbsp;[[companyfunc(item.company)]]</div>
+                        </div>
+                        
+                        <a value="[[item.html_url]]" onclick="window.open(this.value,'_blank','location=no');">
+                        <div id="yay1" class="right">
+                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
+                        </div>
+                        </a>
+                      
+                  </div>
+                </template>
+     </iron-list>
+
+     <iron-list id="list3" items="[[data.items]]" as="item" selection-enabled >
+                <template>
+                  <div>
+                    <div class$="[[getClassForItem(item, selected)]]">
+                      <div class="pad">
+                       <div class="primary">Title: [[item.title]]</div><br>
+                          <div class="shortText">User: [[item.user.login]]</div>
+                          <div class="normText">Date created: [[splittext(item.created_at)]]</div>
+                        <div class="normText">Date updated: [[splittext(item.updated_at)]]</div>
+                        <div class="normText">Date closed: [[splittext(item.closed_at)]]</div>
+                          <div class="shortText">State: [[item.state]]</div>
+                      </div>
+                                              <a value="[[item.html_url]]" onclick="window.open(this.value,'_blank','location=no');">
+                        <div id="yay1" class="right">
+                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
+                        </div>
+                        </a>
+                    </div>
+                  </div>
+                </template>
+     </iron-list>
+     
+  </template>
+  
+
+
+
+  <script>
+    Polymer({
+      is: 'gh-h',
+      ready: function(){
+
+      },
+
+      properties:{
+        isloading: {
+                        type: Boolean,
+                        notify: true,
+                        value: false
+                      },
+        items:{
+          type: Array
+        }, 
+        selected:{
+          type:Number, 
+          value:0
+        },
+        input1:{
+            value: '',
+            notify: true
+        },
+        type1:{
+          value: '.',
+            notify: true
+        },
+        filter:{
+          value: '',
+          notify: true
+        },
+        url:{
+          computed:'computeUrl(input1, type1,filter)'
+        }
+      },
+      computeUrl: function(input1, type1,filter){
+        return[[[[['https://api.github.com/search',type1].join('/'),'q='].join('?'),input1].join(''),'sort='].join('&'),filter].join('');
+      },
+      getClassForItem: function(item, selected) {
+                      return selected ? 'item expanded' : 'item';
+                    },
+      splittext: function(txt){
+                      if (txt===null)
+                        return "-";
+                      return (txt.split('T')[0]);
+                    },
+      attached: function() {
+                      // Use the document element
+                      this.$.list2.scrollTarget = this.ownerDocument.documentElement;
+                      this.$.list.scrollTarget = this.ownerDocument.documentElement;
+                      this.$.list3.scrollTarget = this.ownerDocument.documentElement;
+                    },
+                    ready: function () {
+  document.addEventListener("scroll", function () {
+    // fire iron-resize event to trigger redraw of iron-list
+    document.getElementById("list3").fire('iron-resize');
+    document.getElementById("list").fire('iron-resize');
+    document.getElementById("list2").fire('iron-resize');
+  });
+},
+      handleResponse: function(request){
+        this.isloading = true;
+        var menu=document.querySelector("#myMenu");
+                          if(menu.selectedItem.getAttribute("value")=="users")
+            {           
+                          document.getElementById("list").style.display="none";
+                          document.getElementById("list2").style.display="none";
+                          document.getElementById("list3").style.display="none";
+
+                          document.getElementById("list2").style.display="none";
+                          for(var i=0;i<request.detail.response.items.length;i++)
+                        {
+
+                          (this.Get(request.detail.response.items[i].url,this.perform,i,request));
+                        }
+                         setTimeout(function(){
+                         document.getElementById("list2").style.display="block";
+                          document.getElementById("list2").fire('iron-resize');
+                        },7000);
+
+                         setTimeout(function(){
+                          for(var i=0;i<100;i++);
+                          document.getElementById("list2").fire('iron-resize');
+                        },3000);
+
+                          for(var i=0;i<100;i++)
+                            
+                         document.getElementById("list2").fire('iron-resize');
+             }
+             else
+             {             
+        document.getElementById("list3").style.display="none";
+        document.getElementById("list2").style.display="none";
+        document.getElementById("list").style.display="none";
+                       // this.isloading = true;
+                        setTimeout(function(){
+                          var menu=document.querySelector("#myMenu");
+                          
+                           if(menu.selectedItem.getAttribute("value")=="repositories")
+                           {
+                            document.getElementById("list").style.display="none";
+                            document.getElementById("list2").style.display="none";
+                            document.getElementById("list3").style.display="none";
+
+
+                          document.getElementById("list").style.display="block";
+                          document.getElementById("list").fire('iron-resize');
+                          setTimeout(function(){
+                          for(var i=0;i<100;i++);
+                          document.getElementById("list").fire('iron-resize');
+                        },2000);
+
+                          setTimeout(function(){
+                          document.getElementById("list").style.display="none";
+                          document.getElementById("list").style.display="block";
+                          document.getElementById("list").fire('iron-resize');
+                          },2000);
+                        }
+              else if(menu.selectedItem.getAttribute("value")=="issues")
+            {
+                        document.getElementById("list").style.display="none";
+                        document.getElementById("list2").style.display="none";
+                        document.getElementById("list3").style.display="none";
+
+
+                          document.getElementById("list3").style.display="block";
+                          document.getElementById("list3").fire('iron-resize');
+                          
+            }
+                        }, 2000);
+            }
+                        this.isloading=false;
+      },
+      Get: function (yourUrl,callback,ind,request){
+                      var xmlhttp = new XMLHttpRequest();
+var url = yourUrl;
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var myArr = JSON.parse(xmlhttp.responseText);
+        callback(myArr,ind,request)
+    }
+};
+xmlhttp.PreAuthenticate=true;
+xmlhttp.Proxy=null; 
+xmlhttp.open("GET", url, true);
+xmlhttp.setRequestHeader("Authorization", "Basic " + btoa("pratikpugalia:Tenpowernineplus7"));
+xmlhttp.send();          
+                      },
+                       perform:function(data,ind,request){
+                        //console.log(data);
+                        //console.log(ind);
+                        request.detail.response.items[ind]=data;
+                      },
+                    e_mailfunc: function(txt){
+                      if(txt==null)
+                        return "unknown";
+                      return txt;
+
+                    },
+                    companyfunc: function(txt){
+                      if(txt==null)
+                        return "unknown"
+                      return txt;
+
+                    }
+    });
+
+    var menu=document.querySelector("#myMenu");
+        menu.addEventListener("iron-select",function(e){
+          console.log(menu.selected)
+           if(menu.selectedItem.getAttribute("value")=="repositories")
+            {
+              document.getElementById("list2").style.display="none";
+              document.getElementById("list").style.display="block";
+              document.getElementById("list3").style.display="none";
+
+              document.getElementById("sort2").style.display="none";
+              document.getElementById("sort1").style.display="block";
+              document.getElementById("sort3").style.display="none";
+            }
+            else if(menu.selectedItem.getAttribute("value")=="users")
+            {
+              document.getElementById("list").style.display="none";
+              document.getElementById("list3").style.display="none";
+              document.getElementById("list2").style.display="block";
+              document.getElementById("sort1").style.display="none";
+              document.getElementById("sort3").style.display="none";
+              document.getElementById("sort2").style.display="block"; 
+            }
+            else if(menu.selectedItem.getAttribute("value")=="issues")
+            {
+              document.getElementById("list").style.display="none";
+              document.getElementById("list3").style.display="block"; 
+              document.getElementById("list2").style.display="none";
+              document.getElementById("sort1").style.display="none";
+              document.getElementById("sort3").style.display="block"; 
+              document.getElementById("sort2").style.display="none";
+            } 
+        });
+  </script>
+
+  </dom-module>
+              <div id="run">
+              <gh-h input1="{{input1}}" type1="{{type1}}" filter="{{filter}}"></gh-h>  
+              </div>
+            </div>
+           </iron-pages>          
+           </template>
+           </div>
+
+
+
+          <script>
+          		var count=0;
+                HTMLImports.whenReady(function() {
+
+                  Polymer({
+                     is: 'x-collapse',
+
+                    properties: {
+                      isloading: {
+                        type: Boolean,
+                        notify: true,
+                        value: false
+                      },
+                      items: {
+                        type: Array
+                      }, 
+                      selected:{
+                        type:Number, 
+                        value:0
+                      },
+                      type1:{
+                        value: 'any',
+                          notify: true
+                      },
+                      url:{
+                        computed:'computeUrl(type1)'
+                      }
+                    
+
+                    },
+
+                    attached: function() {
+                      // Use the document element
+                      this.$.list11.scrollTarget = this.ownerDocument.documentElement;
+                    },
+
+                    getClassForItem: function(item, selected) {
+                      return selected ? 'item expanded' : 'item';
+                    }, 
+                    splittext: function(txt){
+                      if (txt===null)
+                        return "-";
+                      return (txt.split('T')[0]);
+                    },
+                    
+      
+                    computeUrl: function(type1){
+                      if(type1=="any")
+                        return 'https://api.github.com/search/repositories?q=+stars:>1&sort=stars&order=desc';
+                    return [['https://api.github.com/search/repositories?q=+language:',type1].join(''),'&sort=stars&order=desc'].join('');
+      },
+                    handleResponse: function(){
+                      document.getElementById("list11").style.display="none";
+                        this.isloading = true;
+                        setTimeout(function(){
+                          document.getElementById("list11").style.display="block";
+                          document.getElementById("list11").fire('iron-resize');
+                        }, 2000);
+                        this.isloading=false;
+                    }
+                  });
+                  Polymer({
+                     is: 'y-collapse',
+
+                    properties: {
+                      isloading: {
+                        type: Boolean,
+                        notify: true,
+                        value: false
+                      },
+                      items: {
+                        type: Array
+                      }, 
+                      selected:{
+                        type:Number, 
+                        value:0
+                      
+                      },
+                      input1:{
+                        value: '',
+                        notify: true
+                      },
+                      url:{
+                        computed:'computeUrl(input1)'
+                      }
+
+                    },
+
+                    attached: function() {
+                      // Use the document element
+                      this.$.list12.scrollTarget = this.ownerDocument.documentElement;
+                    },
+                    e_mailfunc: function(txt){
+                      if(txt==null)
+                        return "unknown";
+                      return txt;
+
+                    },
+                    companyfunc: function(txt){
+                      if(txt==null)
+                        return "unknown"
+                      return txt;
+
+                    },
+
+                    getClassForItem: function(item, selected) {
+                      return selected ? 'item expanded' : 'item';
+                    },
+                    computeUrl: function(input1){
+                      if(input1=="")
+                        return 'https://api.github.com/search/users?q=+followers:>1&sort=followers&order=desc';
+                    return [['https://api.github.com/search/users?q=+location:',input1].join(''),'&sort=followers&order=desc'].join('');},
+                    Get: function (yourUrl,callback,ind,request){
+                      var xmlhttp = new XMLHttpRequest();
+var url = yourUrl;
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var myArr = JSON.parse(xmlhttp.responseText);
+        callback(myArr,ind,request)
+    }
+};
+xmlhttp.PreAuthenticate=true;
+xmlhttp.Proxy=null; 
+xmlhttp.open("GET", url, true);
+xmlhttp.setRequestHeader("Authorization", "Basic " + btoa("pratikpugalia:Tenpowernineplus7"));
+xmlhttp.send();          
+                      },
+                      handleResp:function(request){
+                       //console.log(this.data);
+                        //temp=[];
+                        document.getElementById("list12").style.display="none";
+                        this.isloading = true;
+                        count=request.detail.response.items.length;
+                        //console.log(count);
+                        for(var i=0;i<this.data.items.length;i++)
+                        {
+
+                          (this.Get(request.detail.response.items[i].url,this.perform,i,request));
+                        }
+                        
+                        //this.loading = false;
+
+                      },
+                      perform:function(data,ind,request){
+                        //console.log(data);
+                        //console.log(ind);
+                        count--;
+                        request.detail.response.items[ind]=data;
+                        if(count==0)
+                        {
+                        	this.isloading=false;
+
+                        	document.getElementById("list12").style.display="block";
+                          	for (var i = 0; i < 1000; i++) {
+                          		document.getElementById("list12").fire('iron-resize');
+                          	}
+                          	
+                        }
+                      }
+
+                    
+                  });
+
+                });
+          </script>
+          
+          <script>
+               var pages = document.querySelector('.home');
+               var tabs = document.querySelector('.hide_1');
+
+              tabs.addEventListener('iron-select', function() { 
+                  pages.selected = tabs.selected;
+              });
+
+          </script>
+
+          <script>
+               var pages1 = document.querySelector('.second');
+               var tabs1 = document.querySelector('.hidden_1');
+
+              tabs1.addEventListener('iron-select', function() { 
+                  pages1.selected = tabs1.selected;
+              });
+          </script>
+
+          </paper-header-panel>
+    
+    </paper-drawer-panel>
+
+
+    <script>
+        paperMenuFirstItem.addEventListener('click', function(e) {
+          document.getElementById("firstSet").style.display="block";
+          document.getElementById("secondSet").style.display="none";
+          document.getElementById("hide").style.display="block";
+          document.getElementById("search").style.display="none";        
+          document.getElementById("hidden").style.display="none";
+          //pages.select(1);
+        });
+        paperMenuSecondItem.addEventListener('click', function(e) {
+          document.getElementById("secondSet").style.display="block";
+          document.getElementById("firstSet").style.display="none";
+          document.getElementById("hidden").style.display="block";
+          document.getElementById("search").style.display="none"; 
+          document.getElementById("hide").style.display="none";
+          //pages.select(2);
+        });
+        paperMenuThirdItem.addEventListener('click', function(e) {
+          var pages = document.querySelector('.search_1');
+          document.getElementById("secondSet").style.display="none";
+          document.getElementById("firstSet").style.display="none";
+          document.getElementById("hide").style.display="none";
+          document.getElementById("hidden").style.display="none";
+          document.getElementById("search").style.display="block";
+
+          pages.select(0);
+        });
+        paperMenuForthItem.addEventListener('click', function(e) {
+          //var pages = document.querySelector('.home');
+          document.getElementById("secondSet").style.display="none";
+          document.getElementById("firstSet").style.display="none";
+          document.getElementById("hide").style.display="none";
+          document.getElementById("hidden").style.display="none";
+          document.getElementById("search").style.display="none"; 
+          //pages.select(4);
+          window.open('http://opensource.org/news','_blank','location=no');
+        });
+        paperMenusixthItem.addEventListener('click', function(e) {
+          //var pages = document.querySelector('.home');
+          document.getElementById("secondSet").style.display="none";
+          document.getElementById("firstSet").style.display="none";
+          document.getElementById("hide").style.display="none";
+          document.getElementById("hidden").style.display="none";
+          document.getElementById("search").style.display="none"; 
+          //pages.select(4);
+          
+          var inAppBrowserbRef;
+inAppBrowserbRef = window.open('https://github.com/login','_blank','location=no');
+         window.plugins.spinnerDialog.show("Loading","Loading...");
+        setTimeout(function(){
+            window.plugins.spinnerDialog.hide();
+        }, 5000);
+        });
+
+      
+    </script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+
+</html>

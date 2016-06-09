@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+    <script type="text/javascript" charset="utf-8">
+      document.onclick = function (e) {
+        e = e ||  window.event;
+        var element = e.target || e.srcElement;
+ 
+        if (element.tagName == 'A') {
+            window.open(element.href, "_blank", "location=yes");
+            return false;
+        }
+    };
+
+    function onLoad(){
+      document.addEventListener("deviceready", onDeviceReady, false);
+    }
+
+    function onDeviceReady(){
+      window.open= cordova.InAppBrowser.open;
+    }
+    </script>
+
+
+    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="bower_components/polymer-cordova-inappbrowser-html/polymer-cordova-inappbrowser-html.html">
+    <link rel="import" href="bower_components/paper-button/paper-button.html">
+    <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+    <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="bower_components/polymer/polymer.html">
+    <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
+    <link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
+    <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+    <link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
+    <link rel="import" href="bower_components/paper-input/paper-input.html">
+    <link rel="import" href="bower_components/paper-item/paper-item.html">
+    <link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+    <link rel="import" href="bower_components/paper-menu/paper-menu.html">
+    <link rel="import" href="bower_components/iron-pages/iron-pages.html">
+    <link rel="import" href="bower_components/iron-list/iron-list.html">
+    <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+    <link rel="import" href="bower_components/iron-image/iron-image.html">
+    <link rel="import" href="bower_components/parallax-element/parallax-element.html">
+     <link rel="import" href="bower_components/paper-fab/paper-fab.html">
+     <link rel="import" href="everest/everest.html">
+     <link rel="import" href="everest/everest.css" type="css">
+    <title>Free Open source App</title>
+
+</head>
+
+<body onLoad="onLoad()">
+
+    <style>
+    iron-list {
+        padding-left: 10px;
+        padding-right: 10px;
+        --iron-list-items-container: {
+          @apply(--layout-horizontal);
+          max-width: 800px;
+          margin: auto;
+          margin-top: 60px;
+          margin-bottom: 60px;
+          border-bottom: 1px solid #ddd;
+        };
+      }
+    .item {
+        @apply(--layout-horizontal);
+        position: relative;
+        padding: 10px;
+        background-color: white;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+
+      .avatar {
+        height: 60px;
+        width: 60px;
+        border-radius: 60px;
+        box-sizing: border-box;
+        background-color: #DDD;
+      }
+      .log{
+        height: 20px;
+        width: 20px;
+        margin-top: 20px;
+        border-radius: 20px;
+        box-sizing: border-box; 
+      }
+      .log1{
+        height: 20px;
+        width: 20px;
+        border-radius: 20px;
+        box-sizing: border-box; 
+      }
+      .pad {
+        padding: 0 16px;
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+      }
+
+      .primary {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .shormText, .shortText, .longText, .normText {
+        font-size: 14px;
+      }
+
+
+
+      .longText {
+        color: gray;
+        display: none;
+      }
+      .normText {
+       color: gray;
+        display: none; 
+      }
+      .item:hover .shortText::after {
+        content: ' [+]';
+        color: gray;
+      }
+
+      .item.expanded:hover .shortText::after {
+        content: '';
+      }
+
+      .item.expanded .longText {
+        display: block;
+      }
+      .item.expanded .normText {
+        display: block;
+      }
+      .item.expanded:hover .longText::after {
+        content: ' [–]';
+      }
+      .pad1{
+        position: absolute;
+        left: 20%;
+        top: 10%;
+        
+
+      }
+      .parent{
+        position: relative;
+      }
+      #yay{
+        position: absolute;
+        top: 40px;
+        right:20px;
+      }
+    
+      
+      #hide{
+        display: none;
+      }
+
+      #hidden{
+        display: none;
+      }
+
+      #secondSet{
+        display: none;
+      }
+
+      #firstSet{
+        display: none;
+      }
+      #search{
+        display: none;
+      
+      }
+      #list{
+        display: none;
+      
+      }
+      #list2{
+        display: none;
+      
+      }
+      #list3{
+        display: none;
+      
+      }
+      .input_search{
+        margin-left: 20%;
+        margin-right: 20%;
+        padding-top: 5%;
+        color: gray;
+      }
+
+      .input_search1{
+        margin: auto;
+        padding-top: 2%;
+        color: gray;
+      }
+
+
+      .spacer {
+        @apply(--layout-flex);
+      }
+
+      @media (max-width: 460px) {
+        paper-toolbar .bottom.title {
+          font-size: 14px;
+        }
+      }
+    </style>
+
+     <style is="custom-style">
+      paper-dropdown-menu.custom { 
+
+        --paper-input-container-underline: {
+              display: none;
+            };
+
+      }
+      </style>
+
+    <paper-drawer-panel id="panel" forceNarrow="true">
+        
+        <paper-header-panel drawer id="panel1">
+          
+          <paper-toolbar id="drawerTool" style="background-image: url(img/logo.png);background-repeat: no-repeat; background-position: center;" class="tall">
+            <span class="title">Menu</span>
+          </paper-toolbar>
+         
+        <paper-menu  attr-for-selected="value" selected="{{menu1}}" style="height: 700px" >
+          <paper-item id="paperMenuFirstItem" value="Home" onClick="document.querySelector('#panel').togglePanel()">Home</paper-item>
+          <paper-item id="paperMenuSecondItem" value="About" onClick="document.querySelector('#panel').togglePanel()">About</paper-item>
+          <paper-item id="paperMenuThirdItem" value="Search" onClick="document.querySelector('#panel').togglePanel()">Search</paper-item>
+          <paper-item id="paperMenuFifthItem" value="Help & Feedback" onClick="document.querySelector('#panel').togglePanel()">Help & Feedback</paper-item>
+        </paper-menu>
+        
+        </paper-header-panel>
+    
+
+        <paper-header-panel main>
+          
+          <paper-toolbar id="mainTool">
+            <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+            <span class="title" style="--paper-toolbar-title:[[selected.value]]"></span>
+          </paper-toolbar>
+
+          <div id ="secondSet">
+          <paper-tabs id="hidden" class="hidden_1">
+              <paper-tab>FOSS</paper-tab>
+              <paper-tab>FAQ</paper-tab>
+              <paper-tab>GIT</paper-tab>
+          </paper-tabs>
+
+          <iron-pages class="second">
+            <div>Tab 1 of Page 2</div>
+            <div>Tab 2 of Page 2 </div>
+          </iron-pages>
+          </div>
+
+          <div id ="firstSet">
+          <paper-tabs id="hide" class="hide_1">
+              <paper-tab>Repositories</paper-tab>
+              <paper-tab>Users</paper-tab>
+          </paper-tabs>
+
+          <iron-pages class="home">
+              <div>
+                <dom-module id="x-collapse">
+                <template>
+                <paper-dropdown-menu class="input_search1" style="width: 40%; padding-left: 30%" label="For repos, users, issues" no-label-float selected-item-label="{{selectedItem}}">
+                        <paper-menu attr-for-selected="value" selected="{{type1}}"class="dropdown-content">
+                          <paper-item value="any">All Languages</paper-item>
+                          <paper-item value="C">C</paper-item>
+                          <paper-item value="C%23">C#</paper-item>
+                          <paper-item value="C%2B%2B">C++</paper-item>
+                          <paper-item value="Clojure">Clojure</paper-item>
+                          <paper-item value="CoffeeScript">CoffeeScript</paper-item>
+                          <paper-item value="CSS">CSS</paper-item>
+                          <paper-item value="Go">Go</paper-item>
+                          <paper-item value="Haskell">Haskell</paper-item>
+                          <paper-item value="HTML">HTML</paper-item>
+                          <paper-item value="Java">Java</paper-item>
+                          <paper-item value="JavaScript">JavaScript</paper-item>
+                          <paper-item value="Lua">Lua</paper-item>
+                          <paper-item value="Matlab">Matlab</paper-item>
+                          <paper-item value="Objective-C">Objective-C</paper-item>
+                          <paper-item value="Perl">Perl</paper-item>
+                          <paper-item value="PHP">PHP</paper-item>
+                          <paper-item value="Python">Python</paper-item>
+                          <paper-item value="R">R</paper-item>
+                          <paper-item value="Ruby">Ruby</paper-item>
+                          <paper-item value="Scala">Scala</paper-item>
+                          <paper-item value="Shell">Shell</paper-item>
+                          <paper-item value="Swift">Swift</paper-item>
+                          <paper-item value="TeX">TeX</paper-item>
+                          <paper-item value="VimL">VimL</paper-item>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                <iron-ajax 
+                url="{{url}}" 
+                params='{"alt":"json"}'
+                last-response="{{data}}"
+                auto
+                handle-as="json"
+                on-response="handleResponse"
+                debounce-duration="300"></iron-ajax>
+              <iron-list id="list11" items="[[data.items]]" as="item" selection-enabled >
+                <template>
+                  <div>
+                    <div class$="[[getClassForItem(item, selected)]]">
+                      
+                      <div class="pad">
+                        <div class="primary">Repo_Name: [[item.name]]</div>
+                        <div class="shortText">[[item.full_name]]</div>
+                        <div class="normText">Date created: [[splittext(item.created_at)]]</div>
+                        <div class="normText">Date updated: [[splittext(item.updated_at)]]</div>
+                        <div class="longText">Date pushed: [[splittext(item.pushed_at)]]</div>
+                        <div class="shormText"><iron-image class="log" sizing="contain" src="img/fork.png" align="right">FORKS</iron-image>  [[item.forks_count]] &nbsp;&nbsp;&nbsp;&nbsp; <iron-image class="log1" sizing="contain" src="img/star.png">STARS</iron-image> &nbsp; [[item.stargazers_count]]</div>
+                      </div>
+                      <a href="[[item.html_url]]">
+                      <div id="yay">
+                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
+                        </div>
+                        </a>
+
+                        <paper-input type="button" id="button1" onclick="window.open('http://bit.ly/iphonedevlog','_blank','location=yes','closebuttoncaption=Return');" value="Click Here"></paper-input>  
+                      <iron-icon icon$="[[iconForItem(item)]]"></iron-icon>
+                    </div>
+                  </div>
+                </template>
+              </iron-list>
+
+              </template>
+              </dom-module>
+              <x-collapse></x-collapse>
+              </div>
+              <div>
+                <dom-module id="y-collapse">
+                <template>
+                <paper-input label="Enter Location" style="width:40%" no-label-float type="text" value="{{input1}}" class="input_search1"></paper-input>
+                <iron-ajax 
+                url="{{url}}" 
+                params='{"alt":"json"}'
+                last-response="{{data}}"
+                auto
+                handle-as="json"
+                on-response="handleResp"
+                debounce-duration="300"></iron-ajax>
+                <iron-list id="list12" items="[[data.items]]" as="item" selection-enabled >
+                  <template>
+                    <div>
+                      <div class$="[[getClassForItem(item, selected)]]">
+                      <div class="parent">
+                        <div style="padding-top: 15px">
+                        <iron-image class="avatar" sizing="contain" src="[[item.avatar_url]]"></iron-image>
+                        </div>
+                        <div class="pad1">
+                          <div class="primary" style="font-size: 13px">Username: [[item.login]]</div>
+                          <div class="shormText" style="font-size: 13px">Location: [[item.location]]</div>
+                          <div class="shormText" >Followers: [[item.followers]]</div>
+                        </div>
+                        </div>
+                        <a href="[[item.html_url]]">
+                        <div id="yay">
+                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
+                        </div>
+                        </a>
+                      </div>
+                    </div>
+                  </template>
+                </iron-list>
+                </template>
+              </dom-module>
+              <y-collapse></y-collapse>
+              </div>
+          </iron-pages>
+          </div>
+
+
+
+
+          
+
+          <div id="search">
+          <template is="dom-bind">
+
+          <iron-pages class="search_1">
+            <div section="vertical">
+                  <paper-input label="Search Github" no-label-float type="text" value="{{input1}}" class="input_search"></paper-input>
+                  <paper-dropdown-menu class="input_search" label="For Repos, Users, Issues" no-label-float selected-item-label="{{selectedItem}}">
+                    <paper-menu id="myMenu" attr-for-selected="value" selected="{{type1}}"class="dropdown-content">
+                      <paper-item value="repositories">Repositories</paper-item>
+                      <paper-item value="users">Users</paper-item>
+                      <paper-item value="issues">Issues</paper-item>
+                    </paper-menu>
+                  </paper-dropdown-menu>  
+                  <hr>        
+
+<dom-module id="gh-h">
+  <template>
+
+    <iron-ajax 
+       url="{{url}}" 
+        params='{"alt":"json"}'
+                  last-response="{{data}}"
+                  auto
+                  handle-as="json"
+                  on-response="handleResponse"
+                  debounce-duration="300"></iron-ajax>
+    <iron-list id="list" items="[[data.items]]" as="item" style="height:1200px" selection-enabled >
+                <template>
+                  <div>
+                    <div class$="[[getClassForItem(item, selected)]]">
+                      <iron-image class="avatar" sizing="contain" src="[[item.image]]"></iron-image>
+                      <div class="pad">
+                        <div class="primary">Username: [[item.name]]</div>
+                        <div class="shortText">Name: [[item.full_name]]</div>
+                        <div class="shortText">Owner: [[item.owner.login]]</div>
+                      
+                      </div>
+
+                      <iron-icon icon$="[[iconForItem(item)]]"></iron-icon>
+                    </div>
+                  </div>
+                </template>
+     </iron-list>
+      <iron-list id="list2" items="[[data.items]]" as="item" selection-enabled >
+                <template>
+                  <div>
+                    <div class$="[[getClassForItem(item, selected)]]">
+                      <iron-image class="avatar" sizing="contain" src="[[item.avatar_url]]"></iron-image>
+                      <div class="pad">
+                       <div class="primary">[[item.id]]</div>
+                          <div class="shortText">[[item.login]]</div>
+                          <div class="longText">[[item.html_url]]</div>
+                      </div>
+                      <iron-icon icon$="[[iconForItem(item)]]"></iron-icon>
+                    </div>
+                  </div>
+                </template>
+     </iron-list>
+
+     <iron-list id="list3" items="[[data.items]]" as="item" selection-enabled >
+                <template>
+                  <div>
+                    <div class$="[[getClassForItem(item, selected)]]">
+                      <iron-image class="avatar" sizing="contain" src="[[item.image]]"></iron-image>
+                      <div class="pad">
+                       <div class="primary">Title: [[item.title]]</div>
+                          <div class="shortText">User: [[item.user.login]]</div>
+                          <div class="normText">Date created: [[splittext(item.created_at)]]</div>
+                        <div class="normText">Date updated: [[splittext(item.updated_at)]]</div>
+                        <div class="normText">Date closed: [[splittext(item.closed_at)]]</div>
+                          <div class="shortText">State: [[item.state]]</div>
+                      </div>
+                      <iron-icon icon$="[[iconForItem(item)]]"></iron-icon>
+                    </div>
+                  </div>
+                </template>
+     </iron-list>
+     
+  </template>
+  
+
+
+
+  <script>
+    Polymer({
+      is: 'gh-h',
+      ready: function(){
+
+      },
+
+      properties:{
+        input1:{
+            value: '',
+            notify: true
+        },
+        type1:{
+          value: '.',
+            notify: true
+        },
+        url:{
+          computed:'computeUrl(input1, type1)'
+        }
+      },
+      computeUrl: function(input1, type1){
+        return[[['https://api.github.com/search',type1].join('/'),'q='].join('?'),input1].join('');
+      },
+      getClassForItem: function(item, selected) {
+                      return selected ? 'item expanded' : 'item';
+                    },
+      splittext: function(txt){
+                      if (txt===null)
+                        return "-";
+                      return (txt.split('T')[0]);
+                    },
+      attached: function() {
+                      // Use the document element
+                      this.$.list2.scrollTarget = this.ownerDocument.documentElement;
+                      this.$.list.scrollTarget = this.ownerDocument.documentElement;
+                      this.$.list3.scrollTarget = this.ownerDocument.documentElement;
+                    },
+    });
+
+    var menu=document.querySelector("#myMenu");
+        menu.addEventListener("iron-select",function(e){
+          console.log(menu.selected)
+           if(menu.selectedItem.getAttribute("value")=="repositories")
+            {
+              document.getElementById("list2").style.display="none";
+              document.getElementById("list").style.display="block";
+              document.getElementById("list3").style.display="none";
+            }
+            else if(menu.selectedItem.getAttribute("value")=="users")
+            {
+              document.getElementById("list").style.display="none";
+              document.getElementById("list3").style.display="none";
+              document.getElementById("list2").style.display="block"; 
+            }
+            else if(menu.selectedItem.getAttribute("value")=="issues")
+            {
+              document.getElementById("list").style.display="none";
+              document.getElementById("list3").style.display="block"; 
+              document.getElementById("list2").style.display="none";
+            } 
+        });
+  </script>
+
+  </dom-module>
+              <div id="run">
+              <gh-h input1="{{input1}}" type1="{{type1}}"></gh-h>  
+              </div>
+            </div>
+           </iron-pages>          
+           </template>
+           </div>
+
+
+          <script>
+
+                HTMLImports.whenReady(function() {
+
+                  Polymer({
+                     is: 'x-collapse',
+
+                    properties: {
+
+                      items: {
+                        type: Array
+                      }, 
+                      selected:{
+                        type:Number, 
+                        value:0
+                      },
+                      type1:{
+                        value: 'any',
+                          notify: true
+                      },
+                      url:{
+                        computed:'computeUrl(type1)'
+                      }
+                    
+
+                    },
+
+                    attached: function() {
+                      // Use the document element
+                      this.$.list11.scrollTarget = this.ownerDocument.documentElement;
+                    },
+
+                    getClassForItem: function(item, selected) {
+                      return selected ? 'item expanded' : 'item';
+                    }, 
+                    splittext: function(txt){
+                      if (txt===null)
+                        return "-";
+                      return (txt.split('T')[0]);
+                    },
+      
+                    computeUrl: function(type1){
+                      if(type1=="any")
+                        return 'https://api.github.com/search/repositories?q=+stars:>1&sort=stars&order=desc';
+                    return [['https://api.github.com/search/repositories?q=+language:',type1].join(''),'&sort=stars&order=desc'].join('');
+      }
+                  });
+                  Polymer({
+                     is: 'y-collapse',
+
+                    properties: {
+
+                      items: {
+                        type: Array
+                      }, 
+                      selected:{
+                        type:Number, 
+                        value:0
+                      
+                      },
+                      input1:{
+                        value: '',
+                        notify: true
+                      },
+                      url:{
+                        computed:'computeUrl(input1)'
+                      }
+
+                    },
+
+                    attached: function() {
+                      // Use the document element
+                      this.$.list12.scrollTarget = this.ownerDocument.documentElement;
+                    },
+
+                    getClassForItem: function(item, selected) {
+                      return selected ? 'item expanded' : 'item';
+                    },
+                    computeUrl: function(input1){
+                      if(input1=="")
+                        return 'https://api.github.com/search/users?q=+followers:>1&sort=followers&order=desc';
+                    return [['https://api.github.com/search/users?q=+location:',input1].join(''),'&sort=followers&order=desc'].join('');},
+                    Get: function (yourUrl,callback,ind,request){
+                      var xmlhttp = new XMLHttpRequest();
+var url = yourUrl;
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var myArr = JSON.parse(xmlhttp.responseText);
+        callback(myArr,ind,request)
+    }
+};
+xmlhttp.PreAuthenticate=true;
+xmlhttp.Proxy=null; 
+xmlhttp.open("GET", url, true);
+xmlhttp.setRequestHeader("Authorization", "Basic " + btoa("pratikpugalia:Tenpowernineplus7"));
+xmlhttp.send();          
+                      },
+                      handleResp:function(request){
+                       //console.log(this.data);
+                        //temp=[];
+                        for(var i=0;i<this.data.items.length;i++)
+                        {
+
+                          (this.Get(request.detail.response.items[i].url,this.perform,i,request));
+                        }
+                      },
+                      perform:function(data,ind,request){
+                        //console.log(data);
+                        //console.log(ind);
+                        request.detail.response.items[ind]=data;
+                      }
+
+                    
+                  });
+
+                });
+          </script>
+          
+          <script>
+               var pages = document.querySelector('.home');
+               var tabs = document.querySelector('.hide_1');
+
+              tabs.addEventListener('iron-select', function() { 
+                  pages.selected = tabs.selected;
+              });
+          </script>
+
+          <script>
+               var pages1 = document.querySelector('.second');
+               var tabs1 = document.querySelector('.hidden_1');
+
+              tabs1.addEventListener('iron-select', function() { 
+                  pages1.selected = tabs1.selected;
+              });
+          </script>
+
+          </paper-header-panel>
+    
+    </paper-drawer-panel>
+
+
+    <script>
+        paperMenuFirstItem.addEventListener('click', function(e) {
+          document.getElementById("firstSet").style.display="block";
+          document.getElementById("secondSet").style.display="none";
+          document.getElementById("hide").style.display="block";
+          document.getElementById("search").style.display="none";        
+          document.getElementById("hidden").style.display="none";
+          //pages.select(1);
+        });
+        paperMenuSecondItem.addEventListener('click', function(e) {
+          document.getElementById("secondSet").style.display="block";
+          document.getElementById("firstSet").style.display="none";
+          document.getElementById("hidden").style.display="block";
+          document.getElementById("search").style.display="none"; 
+          document.getElementById("hide").style.display="none";
+          //pages.select(2);
+        });
+        paperMenuThirdItem.addEventListener('click', function(e) {
+          var pages = document.querySelector('.search_1');
+          document.getElementById("secondSet").style.display="none";
+          document.getElementById("firstSet").style.display="none";
+          document.getElementById("hide").style.display="none";
+          document.getElementById("hidden").style.display="none";
+          document.getElementById("search").style.display="block";
+
+          pages.select(0);
+        });
+        paperMenuForthItem.addEventListener('click', function(e) {
+          var pages = document.querySelector('.home');
+          document.getElementById("secondSet").style.display="none";
+          document.getElementById("firstSet").style.display="none";
+          document.getElementById("hide").style.display="none";
+          document.getElementById("hidden").style.display="none";
+          document.getElementById("search").style.display="none"; 
+          pages.select(4);
+        });
+
+
+      
+    </script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+
+</html>

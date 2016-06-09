@@ -1,0 +1,114 @@
+<!--
+`parallax-element` is a container allowing nested
+`parallax-layers` to to implement a parallax scrolling effect,
+by implementing `Polymer.ParallaxScrollerBehavior`
+The effect leverages CCS3 3D transformations.
+This means that the implementation is efficient
+performance-wise, and can be used on mobile.
+    
+    parallax-element > * {
+      min-height: 500px;
+    }
+
+    <parallax-element>
+  	  <div>My first normal DIV<div>
+      <parallax-layers style="z-index: -1;">
+  	    <div depth="-0.5">DIV srolling 25% slower and sliding under normal ones<div>
+      </parallax-layers>
+  	  <div>My second normal DIV<div>
+    </parallax-element>
+
+Children `parallax-layers` components __must__ be used to create
+the parallax effect. To learn more about the usage of `parallax-layers`,
+please refer to it's own documentation.
+
+A `parallax-element` needs an explicit size to be set via CSS.
+This size depends of the orientation of it's layout :
+the height if vertical (default), the width if horizontal.  
+
+    parallax-element {
+      height: 100vh;
+      width: 100vw;
+    }
+
+The orientation of the layout is vertical by default,
+but can be changed using polymer standard built-in attributes :
+
+    <parallax-element horizontal>
+      <parallax-layers>...</parallax-layers>
+    </parallax-element>
+
+__Important notes:__ <ul>
+<li>`parallax-element` must either be explicitly sized, or have and
+explicitly sized parent. By "explicitly sized", we mean it either has an
+explicit CSS `height` property set via a class or inline style, or else is sized
+by other layout means (e.g. the `flex` or `fit` classes).</li>
+<li>Children `parallax-layers` components __must__ be used to create
+the parallax effect. To learn more about the usage of `parallax-layers`,
+please refer to it's own documentation.</li>
+<li>The `parallax-element` component being essantially a flex-box,
+the children `parallax-layers` must be given a minimum size.
+The property to set depends of the orientation
+of the parent's (`parallax-element`) layout :
+"min-height" if vertical (default), or "min-width" if horizontal.</li>
+</ul>
+
+__About the parallax effect and browser support:__
+This component set uses 3D perspective and translations in order to achieve the parallax effect.
+Unfortunatly, Internet Explorer does not support the CCS `transform-style: preserve-3d` and is therefore
+not supported. However, the component will render correctly, as if the parallax effect was disabled.
+
+@element parallax-element
+@demo demo/index.html
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="parallax-scroller-behavior.html">
+<link rel="import" href="parallax-layers.html">
+
+<dom-module id="parallax-element">
+  <template>
+    <style>
+      :host {
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        visibility: hidden;
+
+        /* Every CSS properties that flatten perspective
+         * (such as -webkit-overflow-scrolling: touch;) *must* be avoided
+         * for the scroller, as it breaks the perspective.
+         */
+        -webkit-overflow-scrolling: auto !important;
+      }
+
+      :host(.ready) {
+        visibility: visible;
+      }
+
+      :host(:not([horizontal])) {
+        -webkit-flex-direction: column;
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+
+      :host([horizontal]) {
+        overflow-y: hidden;
+        overflow-x: auto;
+      }
+
+      :host > ::content > * {
+        position: relative;
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    Polymer({
+      is: 'parallax-element',
+      behaviors: [Polymer.ParallaxScrollerBehavior]
+    });
+  </script>
+</dom-module>
