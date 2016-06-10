@@ -110,6 +110,9 @@
         margin-bottom: 10px;
       }
 
+      h3{
+          text-transform: none !important;
+        }
       .avatar {
         position: absolute;
         top: 35%;
@@ -195,8 +198,8 @@
       }
       #yay{
         position: absolute;
-        top: 40px;
-        right:20px;
+        top: 40%;
+        right:2%;
       }
       #yay1{
         position: absolute;
@@ -221,6 +224,9 @@
       #search{
         display: none;
       
+      }
+      #feedback{
+        display: none;
       }
       #list{
         display: none;
@@ -300,6 +306,21 @@
           </paper-toolbar>
 
 
+
+            <div id= "feedback">
+        <iron-pages selected="0">
+        <div  style="padding: 5%">
+        <image src=img/logo2.png style="height: 40%; width: 40%; padding-left: 30%"></image>
+        <h3 style="text-align: center;"> <b>GitHub And Open Source Contribution</b></h3>
+
+        Need any help with the app, find a bug, or see a scope for improvement, feel free to 
+        contact us and share your views. Your suggestions are welcome at <a href="mailto:gitopensourcecon@gmail.com"><u><i>gitopensourcecon@gmail.com</i></u></a>.
+
+        </div>
+        </iron-pages>
+
+      </div>
+
           <div id ="firstSet">
           <paper-tabs id="hide" class="hide_1" selected="0">
               <paper-tab>Open Source</paper-tab>
@@ -330,7 +351,7 @@
 
             <br>
             <br>
-            <h3>Why Open Source?</h3>
+            <h3>WHY OPEN SOURCE?</h3>
 
             Open Source Softwares are reliable and  more secure. A less secure software is a lso a software bug. These bugs are usually addressed with speedy fixes wherever possible and Open Source contributors from all over work to fix such bugs. Hence, severe defects tend to be fixed within hours of their being detected. This is possible only because of the availability of the source code. Able developers who discover a bug also fix it and then report it.
             <br><br>
@@ -364,7 +385,7 @@
             Let's assume you choose organization X, go to thier Wiki check if you know the technologies that they use. Read all relevant information about how to contribute in the project website. Most of the FOSS Organizations have a lot to help a newbie to contribute to their Software. Clone the source code. List down the bugs you find and report.
             In case you are unaware of the technologies they use, learn them now!
             <br><br>
-            Whenever you explore a project, the fisrt thing you look for is its documentation. But not all developers are eager to write one. However, the documentation is necessary for the success of the project.
+            Whenever you explore a project, the first thing you look for is its documentation. But not all developers are eager to write one. However, the documentation is necessary for the success of the project.
             <br>
             In the documentation, one looks for examples on how to use. It is easy to come up with examples if you have been using the software for a while. You may write small pieces of your working codes, or in case of applications, you may share a few screenshots of common usage of a tool.
             <br><br>
@@ -395,7 +416,7 @@
 
 
 
-            <h3>  WHY Github?</h3>
+            <h3>  WHY GitHub?</h3>
     <br>
       Because it’s a social network that has completely changed the way we work. Each user on GitHub has their own profile, which can acts like a resume of sorts, showing your past work and contributions to other projects via pull requests. Simply by being a member, you can brush elbows with the likes of <i>Google</i> and <i>Facebook</i>. Before GitHub existed, major companies created their knowledge mainly in private. But when you access their GitHub accounts, you’re free to download, study, and build upon anything they add to the network.<br><br>
       Still why use something like Git? Say you and a coworker are both updating pages on the same website. You make your changes, save them, and upload them back to the website. So far, so good. The problem comes when your coworker is working on the same page as you at the same time. One of you is about to have your work overwritten and erased.<br><br>  
@@ -1036,7 +1057,6 @@
                   
                 </template>
      </iron-list>
-     <div></div>
       <iron-list id="list2" items="[[data.items]]" as="item" selection-enabled >
                 <template>
                   <div>
@@ -1063,7 +1083,7 @@
                   </div>
                 </template>
      </iron-list>
-      <div></div>
+
      <iron-list id="list3" items="[[data.items]]" as="item" selection-enabled >
                 <template>
                   <div>
@@ -1517,7 +1537,8 @@ xmlhttp.send();
           document.getElementById("secondSet").style.display="none";
           document.getElementById("hide").style.display="block";
           document.getElementById("search").style.display="none";        
-          document.getElementById("hidden").style.display="none"; 
+          document.getElementById("hidden").style.display="none";        
+          document.getElementById("feedback").style.display="none"; 
           //pages.select(1);
         });
         paperMenuSecondItem.addEventListener('click', function(e) {
@@ -1525,13 +1546,15 @@ xmlhttp.send();
           document.getElementById("firstSet").style.display="none";
           document.getElementById("hidden").style.display="block";
           document.getElementById("search").style.display="none"; 
-          document.getElementById("hide").style.display="none";    
+          document.getElementById("hide").style.display="none";        
+          document.getElementById("feedback").style.display="none";    
           //pages.select(2);
         });
         paperMenuThirdItem.addEventListener('click', function(e) {
           var pages = document.querySelector('.search_1');
           document.getElementById("secondSet").style.display="none";
-          document.getElementById("firstSet").style.display="none";
+          document.getElementById("firstSet").style.display="none";       
+          document.getElementById("feedback").style.display="none"; 
           document.getElementById("hide").style.display="none";
           document.getElementById("hidden").style.display="none";
           document.getElementById("search").style.display="block";  
@@ -1543,7 +1566,8 @@ xmlhttp.send();
           document.getElementById("firstSet").style.display="block";
           document.getElementById("secondSet").style.display="none";
           document.getElementById("hide").style.display="block";
-          document.getElementById("search").style.display="none";        
+          document.getElementById("search").style.display="none";            
+          document.getElementById("feedback").style.display="none";    
           document.getElementById("hidden").style.display="none";
           document.getElementById('titleBar').innerHTML="About";   
           //pages.select(4);
@@ -1556,7 +1580,8 @@ xmlhttp.send();
           document.getElementById("firstSet").style.display="none";
           document.getElementById("hide").style.display="none";
           document.getElementById("hidden").style.display="none";
-          document.getElementById("search").style.display="none";  
+          document.getElementById("search").style.display="none";       
+          document.getElementById("feedback").style.display="block";   
 
           pages.select(0);
         });
@@ -1566,7 +1591,8 @@ xmlhttp.send();
           document.getElementById("secondSet").style.display="none";
           document.getElementById("hide").style.display="block";
           document.getElementById("search").style.display="none";        
-          document.getElementById("hidden").style.display="none";   
+          document.getElementById("hidden").style.display="none";          
+          document.getElementById("feedback").style.display="none"; 
           //pages.select(4);
           document.getElementById('titleBar').innerHTML="About";
           
