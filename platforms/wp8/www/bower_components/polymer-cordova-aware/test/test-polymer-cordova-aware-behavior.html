@@ -1,0 +1,20 @@
+<!doctype html>
+
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../polymer-cordova-aware-behavior.html">
+
+<body>
+    <dom-module id="test-polymer-cordova-aware-behavior">
+        <template>
+            <div>Running inside cordova? <span>[[isCordovaEnvironment]]</span></div>
+        </template>
+    </dom-module>
+    <script>
+        Polymer({
+            is: 'test-polymer-cordova-aware-behavior',
+            behaviors: [
+                Polymer.CordovaAwareBehavior
+            ]
+        });
+    </script>
+</body>

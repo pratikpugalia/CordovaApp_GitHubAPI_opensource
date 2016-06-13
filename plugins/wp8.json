@@ -1,0 +1,18 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "{e950d040-3060-11e6-806c-4b09587379c5}"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "{e950d040-3060-11e6-806c-4b09587379c5}"
+        }
+    },
+    "dependent_plugins": {}
+}

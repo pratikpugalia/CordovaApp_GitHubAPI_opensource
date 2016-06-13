@@ -37,10 +37,11 @@
     * Create your own at http://cspisawesome.com
     -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
-    <script src="cordova.js"></script>
+    <script src="phonegap.js"></script>
     <script type="text/javascript" charset="utf-8">
 
     function onLoad(){
+
       document.addEventListener("deviceready", onDeviceReady, false);
     }
 
@@ -81,7 +82,7 @@
      <link rel="import" href="bower_components/paper-fab/paper-fab.html">
      <link rel="import" href="everest/everest.html">
      <link rel="import" href="everest/everest.css" type="css">
-    <title>Free Open source App</title>
+    <title>GitOSCon-Github and Open Source Contribution</title>
 
 </head>
 
@@ -193,6 +194,9 @@
       #sort2{
         display: none;
       }
+      #lost{
+        display: block;
+      }
       #sort3{
         display: none;
       }
@@ -228,15 +232,15 @@
       #feedback{
         display: none;
       }
-      #list{
+      #lista{
         display: none;
       
       }
-      #list2{
+      #list2a{
         display: none;
       
       }
-      #list3{
+      #list3a{
         display: none;
       
       }
@@ -310,7 +314,7 @@
             <div id= "feedback">
         <iron-pages selected="0">
         <div  style="padding: 5%">
-        <image src=img/logo2.png style="height: 40%; width: 40%; padding-left: 30%"></image>
+        <image src=img/logo2.png style="height: 60%; width: 60%; padding-left: 20%"></image>
         <h3 style="text-align: center;"> <b>GitHub And Open Source Contribution</b></h3>
        
         <p style="padding: 5%; font-size: 18px">
@@ -343,7 +347,7 @@
             <h3>WHAT IS OPEN SOURCE?</h3>
             Open Source Software is just like another software, however, you get free access to its source code,  you may use, modify and redistribute it. The open source software is free. Developers from all over the world may contribute to a project, improvise on it and reditribute for the benefit of all.
             <br><br>
-            Contribution form a diversity ebables OSS to integrate a variety of innovative ideas for the software. With so many eyeballs scanninng through the code, it becomes difficult for a bug to escape!
+            Contribution from a diversity enables OSS to integrate a variety of innovative ideas for the software. With so many eyeballs scanning through the code, it becomes difficult for a bug to escape!
             <br><br>
             Open Source Software is not a new concept. It has been in use since mid 1990s. Today, it is used by a large number of powerful organizations for whom security is a priority.
             <br>
@@ -361,7 +365,7 @@
             <br>
             <h3>WHY OPEN SOURCE?</h3>
 
-            Open Source Softwares are reliable and  more secure. A less secure software is a lso a software bug. These bugs are usually addressed with speedy fixes wherever possible and Open Source contributors from all over work to fix such bugs. Hence, severe defects tend to be fixed within hours of their being detected. This is possible only because of the availability of the source code. Able developers who discover a bug also fix it and then report it.
+            Open Source Softwares are reliable and  more secure. A less secure software is also a software bug. These bugs are usually addressed with speedy fixes wherever possible and Open Source contributors from all over work to fix such bugs. Hence, severe defects tend to be fixed within hours of their being detected. This is possible only because of the availability of the source code. Able developers who discover a bug also fix it and then report it.
             <br><br>
             By virtue of being distributed by policy, open source projects necessitate modern software development workflows. These workflows are electronic (meaning process is naturally captured and exposed), asynchronous (meaning decisions are time and location agnostic), and lock-free (meaning contributors can rapidly experiment without prior approval). Open source software users do not need to wait for years to deploy a solution. Open source software can be “test driven” prior to procurement, and is particularly suitable for inter-agency collaboration, rapid prototyping and experimentation.
             <br><br>
@@ -371,7 +375,7 @@
 
 
             <br><br>
-            Know more about<i> <a onclick="window.open('https://opensource.org/','_blank','location=no');"><u>Open Source Initiative</u></a></i>
+            Know more about the <i> <a onclick="window.open('https://opensource.org/','_blank','location=no');"><u>Open Source Initiative</u></a></i>
             </div>
 
 
@@ -447,7 +451,7 @@
 
 
           <div id ="secondSet">
-          <paper-tabs id="hidden" class="hidden_1" selected="0">
+          <paper-tabs id="hidden" class="hidden_1" selected="0" >
               <paper-tab value="rep">Top Repositories</paper-tab>
               <paper-tab>Top Users</paper-tab>
           </paper-tabs>
@@ -625,11 +629,11 @@
 <paper-item value="Haxe">Haxe</paper-item>
 <paper-item value="HCL">HCL</paper-item>
 <paper-item value="HLSL">HLSL</paper-item>
-<paper-item value="HTML+Django">HTML+Django</paper-item>
-<paper-item value="HTML+ECR">HTML+ECR</paper-item>
-<paper-item value="HTML+EEX">HTML+EEX</paper-item>
-<paper-item value="HTML+ERB">HTML+ERB</paper-item>
-<paper-item value="HTML+PHP">HTML+PHP</paper-item>
+<paper-item value="HTML%2BDjango">HTML+Django</paper-item>
+<paper-item value="HTML%2BECR">HTML+ECR</paper-item>
+<paper-item value="HTML%2BEEX">HTML+EEX</paper-item>
+<paper-item value="HTML%2BERB">HTML+ERB</paper-item>
+<paper-item value="HTML%2BPHP">HTML+PHP</paper-item>
 <paper-item value="HTTP">HTTP</paper-item>
 <paper-item value="Hy">Hy</paper-item>
 <paper-item value="HyPhy">HyPhy</paper-item>
@@ -947,7 +951,7 @@
   <paper-spinner  alt="Loading contacts list" active></paper-spinner>
   </div>
 </template>
-                <iron-list sizing="cover" id="list12" items="[[data.items]]" as="item" selection-enabled >
+                <iron-list sizing="cover" id="list12" items="[[data.items]]" as="item" selection-enabled>
                   <template>
                     <div>
                       <div class$="[[getClassForItem(item, selected)]]">
@@ -958,7 +962,7 @@
                         
                         <div class="pad1">
                           <div class="primary" style="font-size: 18px">Name: [[companyfunc(item.name)]]</div>
-                          <div class="shortText">Login: [[item.login]]</div>
+                          <div class="shormText">Login: [[item.login]]</div>
                           <br>
                           <div class="shormText" ><iron-icon icon="social:person-add" style="--iron-icon-fill-color: blue"></iron-icon>  &nbsp; [[item.followers]] </div>
                           <div class="shormText" ><iron-icon icon="communication:location-on"></iron-icon> &nbsp;[[companyfunc(item.location)]]</div>
@@ -990,7 +994,7 @@
 
           <iron-pages class="search_1">
             <div section="vertical">
-                  <paper-input label="Search Github" no-label-float type="text" value="{{input1}}" class="input_search"></paper-input>
+           <paper-input label="Search Github" no-label-float type="text" value="{{input1}}" class="input_search"></paper-input>
                   <paper-dropdown-menu class="input_search" label="For Repos, Users, Issues" no-label-float selected-item-label="{{selectedItem}}">
                     <paper-menu id="myMenu" attr-for-selected="value" selected="{{type1}}"class="dropdown-content">
                       <paper-item value="repositories">Repositories</paper-item>
@@ -999,6 +1003,7 @@
                     </paper-menu>
                   </paper-dropdown-menu>  
                   <hr>
+
                   <paper-dropdown-menu id="sort1" style="padding-bottom: 7%;" class="input_search" label="Best Match" no-label-float selected-item-label="{{selectedItem}}">        
                     <paper-menu attr-for-selected="value" selected="{{filter}}"class="dropdown-content">
                       <paper-item value="">Best Match</paper-item>
@@ -1041,7 +1046,61 @@
   <paper-spinner  alt="Loading contacts list" active></paper-spinner>
   </div>
 </template>
-    <iron-list id="list" items="[[data.items]]" as="item" selection-enabled >
+  
+     
+    <div id="list3a">
+     <iron-list id="list3" items="[[data.items]]" as="item" selection-enabled >
+                <template>
+                  <div>
+                    <div class$="[[getClassForItem(item, selected)]]">
+                      <div class="pad">
+                       <div class="primary">Title: [[item.title]]</div><br>
+                          <div class="shortText">User: [[item.user.login]]</div>
+                          <div class="normText">Date created: [[splittext(item.created_at)]]</div>
+                        <div class="normText">Date updated: [[splittext(item.updated_at)]]</div>
+                        <div class="longText">Date closed: [[splittext(item.closed_at)]]</div>
+                          <div >State: <b>[[item.state]]</b></div>
+                      </div>
+                                              <a value="[[item.html_url]]" onclick="window.open(this.value,'_blank','location=no');">
+                        <div id="yay1" class="right">
+                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
+                        </div>
+                        </a>
+                    </div>
+                  </div>
+                </template>
+     </iron-list>
+     </div>
+     <div id="list2a">
+     <iron-list id="list2" items="[[data.items]]" as="item" selection-enabled >
+                <template>
+                  <div>
+                    <div class$="[[getClassForItem(item, selected)]]">
+                       <div style="padding-top: 15px">
+                        <iron-image class="avatar" sizing="cover" src="[[item.avatar_url]]"></iron-image>
+                        </div>
+                        
+                        <div class="pad1">
+                          <div class="primary" style="font-size: 18px">Name: [[companyfunc(item.name)]]</div>
+                          <div class="shormText">Login: [[item.login]]</div>
+                          <br>
+                          <div class="shormText" ><iron-icon icon="icons:star" style="--iron-icon-fill-color: blue"></iron-icon>  &nbsp; [[item.followers]] </div>
+                          <div class="shormText" ><iron-icon icon="communication:location-on"></iron-icon> &nbsp;[[companyfunc(item.location)]]</div>
+                          <div class="shormText" id="e_mail" ><iron-icon icon="communication:email"></iron-icon>&nbsp;&nbsp;[[e_mailfunc(item.email)]]</div>
+                          <div class="shormText" id="company"><iron-icon icon="communication:contact-mail"></iron-icon> &nbsp;[[companyfunc(item.company)]]</div>
+                        </div>
+                        
+                        <a value="[[item.html_url]]" onclick="window.open(this.value,'_blank','location=no');">
+                        <div id="yay1" class="right">
+                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
+                        </div>
+                        </a>
+                  </div>
+                </template>
+     </iron-list>
+     </div>
+     <div id="lista">
+ <iron-list id="list" items="[[data.items]]" as="item" selection-enabled >
                 <template>
                   <div>
                     <div class$="[[getClassForItem(item, selected)]]">
@@ -1065,55 +1124,7 @@
                   
                 </template>
      </iron-list>
-      <iron-list id="list2" items="[[data.items]]" as="item" selection-enabled >
-                <template>
-                  <div>
-                    <div class$="[[getClassForItem(item, selected)]]">
-                       <div style="padding-top: 15px">
-                        <iron-image class="avatar" sizing="cover" src="[[item.avatar_url]]"></iron-image>
-                        </div>
-                        
-                        <div class="pad1">
-                          <div class="primary" style="font-size: 18px">Name: [[companyfunc(item.name)]]</div>
-                          <div class="shortText">Login: [[item.login]]</div>
-                          <br>
-                          <div class="shormText" ><iron-icon icon="icons:star" style="--iron-icon-fill-color: blue"></iron-icon>  &nbsp; [[item.followers]] </div>
-                          <div class="shormText" ><iron-icon icon="communication:location-on"></iron-icon> &nbsp;[[companyfunc(item.location)]]</div>
-                          <div class="shormText" id="e_mail" ><iron-icon icon="communication:email"></iron-icon>&nbsp;&nbsp;[[e_mailfunc(item.email)]]</div>
-                          <div class="shormText" id="company"><iron-icon icon="communication:contact-mail"></iron-icon> &nbsp;[[companyfunc(item.company)]]</div>
-                        </div>
-                        
-                        <a value="[[item.html_url]]" onclick="window.open(this.value,'_blank','location=no');">
-                        <div id="yay1" class="right">
-                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
-                        </div>
-                        </a>
-                  </div>
-                </template>
-     </iron-list>
-
-     <iron-list id="list3" items="[[data.items]]" as="item" selection-enabled >
-                <template>
-                  <div>
-                    <div class$="[[getClassForItem(item, selected)]]">
-                      <div class="pad">
-                       <div class="primary">Title: [[item.title]]</div><br>
-                          <div class="shortText">User: [[item.user.login]]</div>
-                          <div class="normText">Date created: [[splittext(item.created_at)]]</div>
-                        <div class="normText">Date updated: [[splittext(item.updated_at)]]</div>
-                        <div class="normText">Date closed: [[splittext(item.closed_at)]]</div>
-                          <div class="shortText">State: [[item.state]]</div>
-                      </div>
-                                              <a value="[[item.html_url]]" onclick="window.open(this.value,'_blank','location=no');">
-                        <div id="yay1" class="right">
-                        <paper-fab class="blue" mini icon="arrow-forward" --paper-fab-background: var(--paper-light-blue-500)></paper-fab>
-                        </div>
-                        </a>
-                    </div>
-                  </div>
-                </template>
-     </iron-list>
-     
+</div>
   </template>
   
 
@@ -1186,11 +1197,11 @@
         var menu=document.querySelector("#myMenu");
                           if(menu.selectedItem.getAttribute("value")=="users")
             {           
-                          document.getElementById("list").style.display="none";
-                          document.getElementById("list2").style.display="none";
-                          document.getElementById("list3").style.display="none";
+                          document.getElementById("lista").style.display="none";
+                          document.getElementById("list2a").style.display="none";
+                          document.getElementById("list3a").style.display="none";
 
-                          document.getElementById("list2").style.display="none";
+                          document.getElementById("list2a").style.display="none";
                           count1=request.detail.response.items.length;
                           for(var i=0;i<request.detail.response.items.length;i++)
                         {
@@ -1200,46 +1211,50 @@
              }
              else
              {             
-        document.getElementById("list3").style.display="none";
-        document.getElementById("list2").style.display="none";
-        document.getElementById("list").style.display="none";
+        document.getElementById("list3a").style.display="none";
+        document.getElementById("list2a").style.display="none";
+        document.getElementById("lista").style.display="none";
                        // this.isloading = true;
                         setTimeout(function(){
                           var menu=document.querySelector("#myMenu");
                           
                            if(menu.selectedItem.getAttribute("value")=="repositories")
                            {
-                            document.getElementById("list").style.display="none";
-                            document.getElementById("list2").style.display="none";
-                            document.getElementById("list3").style.display="none";
+                            document.getElementById("lista").style.display="none";
+                            document.getElementById("list2a").style.display="none";
+                            document.getElementById("list3a").style.display="none";
 
 
-                          document.getElementById("list").style.display="block";
+                          //document.getElementById("lista").style.display="block";
                           document.getElementById("list").fire('iron-resize');
+                         
+                          
+                        
+
                           setTimeout(function(){
-                          for(var i=0;i<100;i++);
+                            document.getElementById("searchajax").if=false;
+                          document.getElementById("lista").style.display="none";
+                          document.getElementById("lista").style.display="block";
                           document.getElementById("list").fire('iron-resize');
-                        },2000);
-
-                          setTimeout(function(){
-                          document.getElementById("list").style.display="none";
-                          document.getElementById("list").style.display="block";
-                          document.getElementById("list").fire('iron-resize');
-                          },2000);
+                          },1000);
                         }
               else if(menu.selectedItem.getAttribute("value")=="issues")
             {
-                        document.getElementById("list").style.display="none";
-                        document.getElementById("list2").style.display="none";
-                        document.getElementById("list3").style.display="none";
-
-
-                          document.getElementById("list3").style.display="block";
+                        document.getElementById("lista").style.display="none";
+                        document.getElementById("list2a").style.display="none";
+                        document.getElementById("list3a").style.display="none";
+                        for(var i=0;i<100;i++);
                           document.getElementById("list3").fire('iron-resize');
-                          
+
+                           setTimeout(function(){
+                            document.getElementById("searchajax").if=false;
+                          document.getElementById("list3a").style.display="block";
+                          document.getElementById("list3").fire('iron-resize');
+                          },1000);
+                           
             }
                         }, 2000);
-              this.isloading=false;
+              
             }
                         
       },
@@ -1269,7 +1284,7 @@ xmlhttp.send();
                            setTimeout(function() {
                             document.getElementById("searchajax").if=false;
                           
-                           document.getElementById("list2").style.display="block";
+                           document.getElementById("list2a").style.display="block";
                            for (var i = 0; i <10000 ; i++) {
                             document.getElementById("list2").fire('iron-resize');                        
                             }
@@ -1297,28 +1312,18 @@ xmlhttp.send();
           console.log(menu.selected)
            if(menu.selectedItem.getAttribute("value")=="repositories")
             {
-              document.getElementById("list2").style.display="none";
-              document.getElementById("list").style.display="block";
-              document.getElementById("list3").style.display="none";
-
               document.getElementById("sort2").style.display="none";
               document.getElementById("sort1").style.display="block";
               document.getElementById("sort3").style.display="none";
             }
             else if(menu.selectedItem.getAttribute("value")=="users")
             {
-              document.getElementById("list").style.display="none";
-              document.getElementById("list3").style.display="none";
-              document.getElementById("list2").style.display="block";
               document.getElementById("sort1").style.display="none";
               document.getElementById("sort3").style.display="none";
               document.getElementById("sort2").style.display="block"; 
             }
             else if(menu.selectedItem.getAttribute("value")=="issues")
             {
-              document.getElementById("list").style.display="none";
-              document.getElementById("list3").style.display="block"; 
-              document.getElementById("list2").style.display="none";
               document.getElementById("sort1").style.display="none";
               document.getElementById("sort3").style.display="block"; 
               document.getElementById("sort2").style.display="none";
@@ -1541,6 +1546,7 @@ xmlhttp.send();
 
     <script>
         paperMenuFirstItem.addEventListener('click', function(e) {
+
           document.getElementById("firstSet").style.display="block";
           document.getElementById("secondSet").style.display="none";
           document.getElementById("hide").style.display="block";
@@ -1551,6 +1557,12 @@ xmlhttp.send();
         });
         paperMenuSecondItem.addEventListener('click', function(e) {
           document.getElementById("secondSet").style.display="block";
+          for (var i = 0; i < 100; i++) {
+                       document.getElementById('list12').fire('iron-resize');
+          document.getElementById('list11').fire('iron-resize');
+                   }
+      
+          
           document.getElementById("firstSet").style.display="none";
           document.getElementById("hidden").style.display="block";
           document.getElementById("search").style.display="none"; 
